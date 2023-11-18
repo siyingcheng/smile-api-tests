@@ -5,10 +5,14 @@ import com.aventstack.extentreports.Status;
 import com.smile.core.config.Configurator;
 import com.smile.core.reporter.Reporter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class SmileTestListener implements ITestListener {
@@ -21,13 +25,24 @@ public class SmileTestListener implements ITestListener {
         ITestNGMethod method = result.getMethod();
         String description = """
                 <p class="font-weight-bold">Description: <span class="badge badge-light">%s</span> </p>
-                <p class="font-weight-bold">Groups: <span class="badge badge-info">%s</span> </p>
+                <p class="font-weight-bold">Groups: %s </p>
                 <p class="font-weight-bold">Location: <span class="badge badge-warning">%s</span> </p>
-                """.formatted(method.getDescription(), String.join(", ", method.getGroups()), result.getInstanceName());
+                """.formatted(method.getDescription(), String.join(", ", markupGroups(method.getGroups())), result.getInstanceName());
+        if (method.getMethodsDependedUpon().length != 0) {
+            description += """
+                    <p class="font-weight-bold">Dependencies: %s </p>
+                    """.formatted(StringUtils.join(method.getMethodsDependedUpon(), ", "));
+        }
         reporter.createTest(method.getMethodName(), description);
         ExtentTest extentTest = reporter.getTest();
         extentTest.assignCategory(method.getGroups());
         ITestListener.super.onTestStart(result);
+    }
+
+    private CharSequence markupGroups(String[] groups) {
+        return Arrays.stream(groups)
+                .map(group -> "<span class='badge badge-info'>" + group + "</span>")
+                .collect(Collectors.joining(" "));
     }
 
     @Override

@@ -1,9 +1,10 @@
-package com.smile.models.apidriver;
+package com.smile.core.apidriver;
 
 import com.smile.core.api.ApiResponse;
 import com.smile.core.config.ConfigKeys;
 import com.smile.core.reporter.Reporter;
-import com.smile.models.apidriver.auth.IAuthentication;
+import com.smile.core.apidriver.auth.IAuthentication;
+import com.smile.apiobjects.user.SmileUsers;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
@@ -38,7 +39,7 @@ public class ApiDriver implements RestAPI {
     public ApiDriver(IAuthentication auth) {
         this.auth = auth;
         request = given().contentType(ContentType.JSON).accept(ContentType.JSON);
-        backendUrl =  auth.configurator().getBackendUrl();
+        backendUrl = auth.configurator().getBackendUrl();
         timeout = Integer.parseInt(auth.configurator().getParameterOrDefault(ConfigKeys.SOCKET_TIMEOUT, DEFAULT_TIMEOUT));
         isDeepReporting = Boolean.parseBoolean(auth.configurator().getParameterOrDefault(ConfigKeys.DEEP_REPORTING, "false"));
     }
@@ -54,6 +55,10 @@ public class ApiDriver implements RestAPI {
 
     public ApiResponse login(String username, String password) {
         return this.auth.login(username, password);
+    }
+
+    public ApiResponse login(SmileUsers user) {
+        return login(user.getUsername(), user.getPassword());
     }
 
     private RequestSpecification generateRequestSpecification(String payload) {

@@ -16,7 +16,7 @@ import org.testng.annotations.Listeners;
 @Listeners(SmileTestListener.class)
 public abstract class BaseTest {
     private Configurator configurator;
-    protected SoftAssertions assertions = new SoftAssertions();
+    protected SoftAssertions assertion = new SoftAssertions();
     protected Reporter reporter = Reporter.getInstance();
 
     @BeforeSuite(alwaysRun = true)

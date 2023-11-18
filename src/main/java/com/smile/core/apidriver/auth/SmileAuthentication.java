@@ -1,4 +1,4 @@
-package com.smile.models.apidriver.auth;
+package com.smile.core.apidriver.auth;
 
 import com.smile.core.api.ApiResponse;
 import com.smile.core.config.ConfigKeys;

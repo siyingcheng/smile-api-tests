@@ -4,11 +4,11 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.smile.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.IReporter;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +20,8 @@ import static com.smile.core.reporter.HtmlMarkup.bolder;
 @Slf4j
 public class Reporter implements IReporter {
     private static final SimpleDateFormat REPORT_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
+    private static final String REPORT_TITLE = "Smile API Automation Report";
+    private static final String REPORT_NAME = "Smile API Automation Report";
     private ExtentReports extent;
     private static Reporter instance;
     private final Map<Long, ExtentTest> extentTestMap = new ConcurrentHashMap<>();
@@ -68,7 +70,16 @@ public class Reporter implements IReporter {
         extent = new ExtentReports();
         ExtentSparkReporter spark = new ExtentSparkReporter(reportFile.toString());
         extent.attachReporter(spark);
-        spark.config().setTheme(Theme.DARK);
+        // Custom Report Style
+        try {
+            spark.loadXMLConfig(System.getProperty("user.dir") + "/config/spark-config.xml");
+        } catch (IOException e) {
+            log.error("Failed to load spark-config.xml");
+        }
+        // Report System Info
+        extent.setSystemInfo("OS", System.getProperty("os.name") + " " + System.getProperty("os.version"));
+        extent.setSystemInfo("User", System.getProperty("user.name"));
+        extent.setSystemInfo("Java", System.getProperty("java.vm.name") + " " + System.getProperty("java.version"));
         log.info("Extent-reports generated: {}", reportFile);
     }
 

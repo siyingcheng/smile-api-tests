@@ -2,7 +2,7 @@ package com.smile.core.reporter;
 
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.smile.models.response.ApiResponseDto;
+import com.smile.core.response.ApiResponseDto;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.FilterableRequestSpecification;
@@ -36,7 +36,7 @@ public class ReportFactor {
     }
 
     public static void reportRequestUrl(String method, String url) {
-        String requestUrl = String.format("[%s]: %s", method, url);
+        String requestUrl = String.format("[%s]: <a>%s</a>", method, url);
         reporter.log(Status.INFO, requestUrl);
         log.info(requestUrl);
     }

@@ -1,4 +1,4 @@
-package com.smile.models.apidriver;
+package com.smile.core.apidriver;
 
 import java.util.Map;
 

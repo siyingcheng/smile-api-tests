@@ -1,7 +1,8 @@
 package com.smile.core.testng;
 
-import com.smile.models.apidriver.ApiDriver;
-import com.smile.models.apidriver.auth.SmileAuthentication;
+import com.smile.core.api.ApiResponse;
+import com.smile.core.apidriver.ApiDriver;
+import com.smile.core.apidriver.auth.SmileAuthentication;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.ITestContext;
@@ -23,5 +24,9 @@ public class BaseApiTest extends BaseTest {
         if (apiDriver == null) {
             apiDriver = new ApiDriver(new SmileAuthentication(getConfigurator()));
         }
+    }
+
+    public void verifyHttpStatus(ApiResponse response, int expectedStatus, String message) {
+        assertion.assertEquals(response.statusCode(), expectedStatus, message);
     }
 }
