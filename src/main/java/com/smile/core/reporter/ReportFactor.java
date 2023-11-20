@@ -2,16 +2,19 @@ package com.smile.core.reporter;
 
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import com.smile.core.response.ApiResponseDto;
+import com.google.gson.Gson;
+import com.smile.core.apidriver.ApiResponseDto;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
 import io.restassured.specification.FilterableRequestSpecification;
 import io.restassured.specification.RequestSpecification;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @UtilityClass
 @Slf4j
@@ -24,6 +27,19 @@ public class ReportFactor {
                 ? "No Content"
                 : MarkupHelper.createJsonCodeBlock(response.getBody().as(ApiResponseDto.class)).getMarkup();
         String details = "Response Body " +
+                " <a href=\"#\" onclick=\"$(this).next('div').toggle()\"> Expand / Collapse </a>" +
+                "<div style=\"display: none;\">" +
+                body +
+                "</div>";
+        reporter.log(Status.INFO, details);
+    }
+
+    public static void reportRequestBody(String payload, boolean isDeepReporting) {
+        if (!isDeepReporting) return;
+        String body = StringUtils.isEmpty(payload)
+                ? "No Content"
+                : MarkupHelper.createJsonCodeBlock(new Gson().fromJson(payload, Map.class)).getMarkup();
+        String details = "Request Body " +
                 " <a href=\"#\" onclick=\"$(this).next('div').toggle()\"> Expand / Collapse </a>" +
                 "<div style=\"display: none;\">" +
                 body +

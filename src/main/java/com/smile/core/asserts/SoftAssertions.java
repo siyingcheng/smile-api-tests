@@ -1,6 +1,7 @@
 package com.smile.core.asserts;
 
 import com.smile.core.reporter.Reporter;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
 
 import java.util.Optional;
@@ -21,10 +22,19 @@ public class SoftAssertions {
     public void assertEquals(Object actual, Object expected, String message) {
         Optional<AssertionError> assertionError = softAssertResult(() -> Assert.assertEquals(actual, expected, message));
         String formattedMessage = getEqualsFormattedMessage(actual, expected, message);
-        if (assertionError.isPresent()) {
-            reporter.log(FAIL, formattedMessage);
+        reportAssertResult(assertionError.isPresent(), formattedMessage);
+    }
+
+    public void assertNotNull(Object object, String message) {
+        Optional<AssertionError> assertionError = softAssertResult(() -> Assert.assertNotNull(object, message));
+        reportAssertResult(assertionError.isPresent(), message);
+    }
+
+    private void reportAssertResult(boolean isFailed, String message) {
+        if (isFailed) {
+            reporter.log(FAIL, message);
         } else {
-            reporter.log(PASS, formattedMessage);
+            reporter.log(PASS, message);
         }
     }
 
@@ -33,7 +43,7 @@ public class SoftAssertions {
                 %s %s
                 A: %s %s
                 E: %s %s
-                """.formatted(message, lineBreak(), actual, lineBreak(), expected, lineBreak());
+                """.formatted(StringUtils.isEmpty(message) ? "" : message, lineBreak(), actual, lineBreak(), expected, lineBreak());
     }
 
     private Optional<AssertionError> softAssertResult(SoftAssertWrapper wrapper) {

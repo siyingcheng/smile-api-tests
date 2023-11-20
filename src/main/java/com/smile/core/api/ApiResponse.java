@@ -7,6 +7,9 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
+import static com.smile.testcases.constant.JsonPathConstant.DATA_PATH;
+import static com.smile.testcases.constant.JsonPathConstant.MESSAGE_PATH;
+
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -25,15 +28,27 @@ public class ApiResponse {
         return response.getBody().jsonPath().getObject(jsonPath, genericType);
     }
 
+    public Object getFromJsonPath(String jsonPath) {
+        return response.getBody().jsonPath().get(jsonPath);
+    }
+
     public String getStringFromJsonPath(String jsonPath) {
         return response.getBody().jsonPath().getString(jsonPath);
     }
 
-    public List<?> getListFromJsonPath(String jsonPath) {
-        return response.getBody().jsonPath().getList(jsonPath);
+    public <T> List<T> getListFromJsonPath(String jsonPath, Class<T> genericType) {
+        return response.getBody().jsonPath().getList(jsonPath, genericType);
     }
 
-    public List<?> getListFromJsonPath(String jsonPath, Class<?> genericType) {
-        return response.getBody().jsonPath().getList(jsonPath, genericType);
+    public String getMessage() {
+        return response.getBody().jsonPath().getString(MESSAGE_PATH);
+    }
+
+    public <T> T getData(Class<T> dtoType) {
+        return response.getBody().jsonPath().getObject(DATA_PATH, dtoType);
+    }
+
+    public <T> List<T> getDataList(Class<T> dtoType) {
+        return response.getBody().jsonPath().getList(DATA_PATH, dtoType);
     }
 }

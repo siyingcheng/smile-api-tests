@@ -3,7 +3,7 @@ package com.smile.testcases.auth;
 import com.smile.apiobjects.user.SmileUserDTO;
 import com.smile.core.api.ApiResponse;
 import com.smile.core.testng.BaseApiTest;
-import lombok.extern.slf4j.Slf4j;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.smile.apiobjects.user.SmileUsers.ADMIN;
@@ -11,35 +11,40 @@ import static com.smile.apiobjects.user.SmileUsers.INVALID;
 import static com.smile.apiobjects.user.SmileUsers.OWEN;
 import static com.smile.testcases.auth.ErrorMessages.USERNAME_PASSWORD_INCORRECT;
 import static com.smile.testcases.auth.ErrorMessages.USER_DISABLED;
+import static com.smile.testcases.constant.JsonPathConstant.DATA_PATH;
+import static com.smile.testcases.constant.JsonPathConstant.DATA_TOKEN_PATH;
+import static com.smile.testcases.constant.JsonPathConstant.DATA_USERINFO_PATH;
+import static com.smile.testcases.constant.JsonPathConstant.DATA_USERINFO_USERNAME_PATH;
+import static com.smile.testcases.constant.JsonPathConstant.DATA_USERINFO_EMAIL_PATH;
+import static com.smile.testcases.constant.JsonPathConstant.MESSAGE_PATH;
 import static java.net.HttpURLConnection.HTTP_OK;
 
-@Slf4j
 public class AuthenticationTest extends BaseApiTest {
     private static final String NONE_EXIST_USERNAME = "notExistUser";
     private static final String INCORRECT_PASSWORD = "IncorrectPassWord";
-    private static final String TOKEN_PATH = "data.token";
-    private static final String USERINFO_PATH = "data.userInfo";
-    private static final String USERNAME_PATH = USERINFO_PATH + ".username";
-    private static final String EMAIL_PATH = USERINFO_PATH + ".email";
-    private static final String MESSAGE_PATH = "message";
-    private static final String DATA_PATH = "data";
+
+    @BeforeClass(alwaysRun = true)
+    public void beforeClass() {
+        initTest();
+        generateApiDriver();
+    }
 
     @Test(groups = {"P0", "Regression"}, description = "TC0001: Verify Login Success")
     public void test_TC0001_VerifyLoginSuccess() {
         reporter.logStep("Step 1 - Login with a valid administrator user");
         ApiResponse response = getApiDriver().login(ADMIN);
         verifyHttpStatus(response, HTTP_OK, "Verify response status should be 200");
-        assertion.assertFalse(response.getStringFromJsonPath(TOKEN_PATH).isEmpty(),
+        assertion.assertFalse(response.getStringFromJsonPath(DATA_TOKEN_PATH).isEmpty(),
                 "The authorization token should be returned in the response.");
-        assertion.assertEquals(response.getStringFromJsonPath(USERNAME_PATH), ADMIN.getUsername(),
+        assertion.assertEquals(response.getStringFromJsonPath(DATA_USERINFO_USERNAME_PATH), ADMIN.getUsername(),
                 "User information, such as the username, should be returned in the response.");
 
         reporter.logStep("Step 2 - Login with a valid normal user");
         response = getApiDriver().login(OWEN);
         verifyHttpStatus(response, HTTP_OK, "Verify response status should be 200");
-        assertion.assertFalse(response.getStringFromJsonPath(TOKEN_PATH).isEmpty(),
+        assertion.assertFalse(response.getStringFromJsonPath(DATA_TOKEN_PATH).isEmpty(),
                 "The authorization token should be returned in the response.");
-        assertion.assertEquals(response.getStringFromJsonPath(USERNAME_PATH), OWEN.getUsername(),
+        assertion.assertEquals(response.getStringFromJsonPath(DATA_USERINFO_USERNAME_PATH), OWEN.getUsername(),
                 "User information, such as the username, should be returned in the response.");
     }
 
@@ -72,15 +77,15 @@ public class AuthenticationTest extends BaseApiTest {
         reporter.logStep("Step 1 - Login with email and password");
         ApiResponse response = getApiDriver().login(OWEN.getEmail(), OWEN.getPassword());
         verifyHttpStatus(response, HTTP_OK, "Verify response status should be 200");
-        assertion.assertFalse(response.getStringFromJsonPath(TOKEN_PATH).isEmpty(),
+        assertion.assertFalse(response.getStringFromJsonPath(DATA_TOKEN_PATH).isEmpty(),
                 "The authorization token should be returned in the response.");
-        assertion.assertEquals(response.getStringFromJsonPath(USERNAME_PATH), OWEN.getUsername(),
+        assertion.assertEquals(response.getStringFromJsonPath(DATA_USERINFO_USERNAME_PATH), OWEN.getUsername(),
                 "Username should be returned in the response.");
-        assertion.assertEquals(response.getStringFromJsonPath(EMAIL_PATH), OWEN.getEmail(),
+        assertion.assertEquals(response.getStringFromJsonPath(DATA_USERINFO_EMAIL_PATH), OWEN.getEmail(),
                 "Email should be returned in the response.");
 
         // Verify DTO
-        SmileUserDTO actualUser = response.getObjectFromJsonPath(USERINFO_PATH, SmileUserDTO.class);
+        SmileUserDTO actualUser = response.getObjectFromJsonPath(DATA_USERINFO_PATH, SmileUserDTO.class);
         SmileUserDTO expectedUer = SmileUserDTO.builder()
                 .username(OWEN.getUsername())
                 .email(OWEN.getEmail())
