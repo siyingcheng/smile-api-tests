@@ -3,6 +3,7 @@ package com.smile.core.listeners;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.smile.core.config.Configurator;
+import com.smile.core.reporter.HtmlMarkup;
 import com.smile.core.reporter.Reporter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,9 +34,8 @@ public class SmileTestListener implements ITestListener {
                     <p class="font-weight-bold">Dependencies: %s </p>
                     """.formatted(StringUtils.join(method.getMethodsDependedUpon(), ", "));
         }
-        reporter.createTest(method.getMethodName(), description);
-        ExtentTest extentTest = reporter.getTest();
-        extentTest.assignCategory(method.getGroups());
+        reporter.startTest(method.getMethodName(), description);
+        reporter.assignCategory(method.getGroups());
         ITestListener.super.onTestStart(result);
     }
 
@@ -55,32 +55,31 @@ public class SmileTestListener implements ITestListener {
             return;
         }
         log.info("onTestSuccess");
-        doOnOneTestComplete();
         ITestListener.super.onTestSuccess(result);
-    }
-
-    private void doOnOneTestComplete() {
-        reporter.removeTest();
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
+        ExtentTest extentTest = reporter.getTest();
+        if (extentTest.getStatus() == Status.PASS) {
+            Throwable throwable = result.getThrowable();
+            String detailStack = HtmlMarkup.bolder(throwable.getMessage()) + "<br/>" +
+                    Arrays.stream(throwable.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.joining("<br/>"));
+            extentTest.log(Status.FAIL, detailStack);
+        }
         log.info("onTestFailure");
-        doOnOneTestComplete();
         ITestListener.super.onTestFailure(result);
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         log.info("onTestSkipped");
-        doOnOneTestComplete();
         ITestListener.super.onTestSkipped(result);
     }
 
     @Override
     public void onTestFailedWithTimeout(ITestResult result) {
         log.info("onTestFailedWithTimeout");
-        doOnOneTestComplete();
         ITestListener.super.onTestFailedWithTimeout(result);
     }
 

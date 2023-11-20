@@ -3,6 +3,7 @@ package com.smile.core.reporter;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.model.Test;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.smile.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +21,7 @@ import static com.smile.core.reporter.HtmlMarkup.bolder;
 @Slf4j
 public class Reporter implements IReporter {
     private static final SimpleDateFormat REPORT_FORMAT = new SimpleDateFormat("yyyyMMdd_HHmmss");
-    private static final String REPORT_TITLE = "Smile API Automation Report";
-    private static final String REPORT_NAME = "Smile API Automation Report";
+    private static final String NEW_TEST_NAME = "__THIS_TEST_A_NEW_TEST";
     private ExtentReports extent;
     private static Reporter instance;
     private final Map<Long, ExtentTest> extentTestMap = new ConcurrentHashMap<>();
@@ -46,16 +46,39 @@ public class Reporter implements IReporter {
     }
 
 
-    public ExtentTest getTest() {
-        return extentTestMap.get(Thread.currentThread().threadId());
+    public synchronized ExtentTest getTest() {
+        ExtentTest extentTest = extentTestMap.get(Thread.currentThread().threadId());
+        if (extentTest == null) {
+            // Create new Test
+            extentTest = extent.createTest(NEW_TEST_NAME);
+            extentTestMap.put(Thread.currentThread().threadId(), extentTest);
+        }
+        return extentTest;
     }
 
-    public synchronized void createTest(String name, String description) {
-        extentTestMap.put(Thread.currentThread().threadId(), extent.createTest(name, description));
+    public synchronized void startTest(String name, String description) {
+        ExtentTest extentTest = getTest();
+        Test test = extentTest.getModel();
+        if (isNewTest(test, name) && !isCreatedInBeforeClass(test)) {
+            removeTest();
+            extentTest = getTest();
+            test = extentTest.getModel();
+            extentTestMap.put(Thread.currentThread().threadId(), extentTest);
+        }
+        test.setName(name);
+        test.setDescription(description);
     }
 
-    public synchronized void createTest(String name) {
-        createTest(name, null);
+    public void assignCategory(String[] groups) {
+        getTest().assignCategory(groups);
+    }
+
+    private boolean isNewTest(Test test, String name) {
+        return !test.getName().equals(name);
+    }
+
+    private boolean isCreatedInBeforeClass(Test test) {
+        return test.getName().equals(NEW_TEST_NAME);
     }
 
     public synchronized void removeTest() {
