@@ -1,4 +1,4 @@
-package com.smile.testcases.constant;
+package com.smile.constant;
 
 public class JsonPathConstant {
 
@@ -11,6 +11,9 @@ public class JsonPathConstant {
     public static final String DATA_EMAIL = DATA_PATH + ".email";
     public static final String DATA_ROLES = DATA_PATH + ".roles";
     public static final String DATA_ENABLED = DATA_PATH + ".enabled";
+    public static final String DATA_FULL_ADDRESS = DATA_PATH + ".fullAddress";
+    public static final String DATA_PHONE = DATA_PATH + ".phone";
+    public static final String DATA_IS_DEFAULT = DATA_PATH + ".isDefault";
     public static final String DATA_USERINFO_USERNAME_PATH = DATA_USERINFO_PATH + ".username";
     public static final String DATA_USERINFO_EMAIL_PATH = DATA_USERINFO_PATH + ".email";
     public static final String MESSAGE_PATH = "message";

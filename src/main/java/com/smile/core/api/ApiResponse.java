@@ -7,8 +7,8 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
-import static com.smile.testcases.constant.JsonPathConstant.DATA_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.MESSAGE_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_PATH;
+import static com.smile.constant.JsonPathConstant.MESSAGE_PATH;
 
 @Data
 @Accessors(chain = true)
