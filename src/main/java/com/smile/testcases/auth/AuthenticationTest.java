@@ -9,23 +9,24 @@ import org.testng.annotations.Test;
 import static com.smile.apiobjects.user.SmileUsers.ADMIN;
 import static com.smile.apiobjects.user.SmileUsers.INVALID;
 import static com.smile.apiobjects.user.SmileUsers.OWEN;
+import static com.smile.constant.JsonPathConstant.DATA_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_TOKEN_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_USERINFO_EMAIL_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_USERINFO_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_USERINFO_USERNAME_PATH;
+import static com.smile.constant.JsonPathConstant.MESSAGE_PATH;
 import static com.smile.testcases.auth.ErrorMessages.USERNAME_PASSWORD_INCORRECT;
 import static com.smile.testcases.auth.ErrorMessages.USER_DISABLED;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_TOKEN_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_USERINFO_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_USERINFO_USERNAME_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_USERINFO_EMAIL_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.MESSAGE_PATH;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class AuthenticationTest extends BaseApiTest {
     private static final String NONE_EXIST_USERNAME = "notExistUser";
     private static final String INCORRECT_PASSWORD = "IncorrectPassWord";
 
+    @Override
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
-        initTest();
+        super.beforeClass();
         generateApiDriver();
     }
 

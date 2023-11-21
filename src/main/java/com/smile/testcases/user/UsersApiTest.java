@@ -17,14 +17,14 @@ import java.util.List;
 
 import static com.smile.apiobjects.user.IUser.DEFAULT_PASSWORD;
 import static com.smile.apiobjects.user.SmileUsers.ADMIN;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_EMAIL;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_ENABLED;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_ID_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_NICKNAME;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_PATH;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_ROLES;
-import static com.smile.testcases.constant.JsonPathConstant.DATA_USERNAME;
-import static com.smile.testcases.constant.JsonPathConstant.MESSAGE_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_EMAIL;
+import static com.smile.constant.JsonPathConstant.DATA_ENABLED;
+import static com.smile.constant.JsonPathConstant.DATA_ID_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_NICKNAME;
+import static com.smile.constant.JsonPathConstant.DATA_PATH;
+import static com.smile.constant.JsonPathConstant.DATA_ROLES;
+import static com.smile.constant.JsonPathConstant.DATA_USERNAME;
+import static com.smile.constant.JsonPathConstant.MESSAGE_PATH;
 import static java.net.HttpURLConnection.HTTP_BAD_REQUEST;
 import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 
@@ -36,9 +36,11 @@ public class UsersApiTest extends BaseApiTest {
     private UserPayloadGenerator newUserPayload;
     private static final String NON_EXIST_ID = String.valueOf(Integer.MAX_VALUE);
 
+    @Override
     @BeforeClass(alwaysRun = true)
     public void beforeClass() {
-        initTest();
+        super.beforeClass();
+
         generateApiDriver();
         usersApiObject = new UsersApiObject(getApiDriver());
 
@@ -64,17 +66,7 @@ public class UsersApiTest extends BaseApiTest {
 
     @AfterClass(alwaysRun = true)
     public void afterClass() {
-        reporter.logStep("Step 2 - Login with: " + ADMIN.getUsername());
-        ApiResponse loginResponse = getApiDriver().login(ADMIN);
-        verifyStatusIsOK(loginResponse);
-
-        if (!userIds.isEmpty()) {
-            for (String userId : userIds) {
-                reporter.logStep("CLEANUP - Delete user with ID: " + userId);
-                ApiResponse response = usersApiObject.deleteUser(userId);
-                verifyStatusIsOK(response);
-            }
-        }
+        deleteUsers(userIds);
 
         reporter.logStep("CLEANUP - Logout administrator");
         getApiDriver().logout();

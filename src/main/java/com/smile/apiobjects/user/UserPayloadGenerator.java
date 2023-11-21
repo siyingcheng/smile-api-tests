@@ -6,6 +6,15 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.json.JSONObject;
 
+/**
+ * Payload Example:
+ * {
+ *   "password": "Is#TestPassW0rd",
+ *   "nickname": "test_tc0008 TC",
+ *   "email": "test_tc0008@example.com",
+ *   "username": "test_tc0008"
+ * }
+ */
 @Builder
 @Accessors(chain = true)
 @Data

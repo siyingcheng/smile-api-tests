@@ -6,11 +6,9 @@
 
     <test name="Api-Tests">
         <classes>
-            <class name="com.smile.testcases.auth.AuthenticationTest"/>
-            <class name="com.smile.testcases.user.UsersApiTest">
-                <!--                <methods>-->
-                <!--                    <include name="test_TC0016_VerifyDeleteUserErrorWhenIdNonExist"/>-->
-                <!--                </methods>-->
+<!--            <class name="com.smile.testcases.auth.AuthenticationTest"/>-->
+<!--            <class name="com.smile.testcases.user.UsersApiTest">-->
+            <class name="com.smile.testcases.user.AddressAPiTest">
             </class>
         </classes>
     </test>
