@@ -1,4 +1,4 @@
-package com.smile.utils;
+package com.smile.core.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,8 @@
 package com.smile.apiobjects;
 
-import com.smile.core.apidriver.ApiDriver;
-import com.smile.core.errors.SmileApiException;
+
+import com.simon.core.apidriver.ApiDriver;
+import com.simon.core.errors.SmileApiException;
 
 public class BaseApiObject {
     protected static final String BASE_URL = "/api/v1";

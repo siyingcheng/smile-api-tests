@@ -1,8 +1,8 @@
 package com.smile.apiobjects.address;
 
+import com.simon.core.api.ApiResponse;
+import com.simon.core.apidriver.ApiDriver;
 import com.smile.apiobjects.BaseApiObject;
-import com.smile.core.api.ApiResponse;
-import com.smile.core.apidriver.ApiDriver;
 
 public class AddressApiObject extends BaseApiObject {
     private static final String USER_ID_ADDRESS_URL = BASE_URL + "/users/{userId}/address";

@@ -1,8 +1,8 @@
 package com.smile.testcases.auth;
 
+import com.simon.core.api.ApiResponse;
 import com.smile.apiobjects.user.SmileUserDTO;
-import com.smile.core.api.ApiResponse;
-import com.smile.core.testng.BaseApiTest;
+import com.smile.testcases.BaseApiTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
