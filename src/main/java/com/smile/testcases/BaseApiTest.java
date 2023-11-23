@@ -1,11 +1,12 @@
-package com.smile.core.testng;
+package com.smile.testcases;
 
 import com.github.javafaker.Faker;
+import com.simon.core.api.ApiResponse;
+import com.simon.core.apidriver.ApiDriver;
+import com.simon.core.apidriver.auth.SmileAuthentication;
+import com.simon.core.testng.BaseTest;
 import com.smile.apiobjects.address.AddressApiObject;
 import com.smile.apiobjects.user.UsersApiObject;
-import com.smile.core.api.ApiResponse;
-import com.smile.core.apidriver.ApiDriver;
-import com.smile.core.apidriver.auth.SmileAuthentication;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeClass;

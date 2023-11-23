@@ -1,11 +1,12 @@
 package com.smile.apiobjects.user;
 
+import com.simon.core.apidriver.auth.ILogin;
 import lombok.Getter;
 
 import static com.smile.apiobjects.user.IUser.DEFAULT_PASSWORD;
 
 @Getter
-public enum SmileUsers {
+public enum SmileUsers implements ILogin {
     ADMIN(1, "admin", DEFAULT_PASSWORD, SmileRole.ROLE_ADMIN, "admin@example.com", true),
     INVALID(2, "invalid", DEFAULT_PASSWORD, SmileRole.ROLE_USER, "invalid@example.com", false),
     OWEN(202, "owen", DEFAULT_PASSWORD, SmileRole.ROLE_USER, "owen0999@example.com", true);

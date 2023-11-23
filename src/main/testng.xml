@@ -6,8 +6,8 @@
 
     <test name="Api-Tests">
         <classes>
-<!--            <class name="com.smile.testcases.auth.AuthenticationTest"/>-->
-<!--            <class name="com.smile.testcases.user.UsersApiTest">-->
+            <class name="com.smile.testcases.auth.AuthenticationTest"/>
+            <class name="com.smile.testcases.user.UsersApiTest"/>
             <class name="com.smile.testcases.user.AddressAPiTest">
             </class>
         </classes>

@@ -1,12 +1,12 @@
 package com.smile.testcases.user;
 
+import com.simon.core.api.ApiResponse;
 import com.smile.apiobjects.address.AddressApiObject;
 import com.smile.apiobjects.address.AddressDTO;
 import com.smile.apiobjects.address.AddressPayloadGenerator;
 import com.smile.apiobjects.user.UserPayloadGenerator;
 import com.smile.apiobjects.user.UsersApiObject;
-import com.smile.core.api.ApiResponse;
-import com.smile.core.testng.BaseApiTest;
+import com.smile.testcases.BaseApiTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;

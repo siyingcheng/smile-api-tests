@@ -1,6 +1,5 @@
-package com.smile.core.apidriver;
+package com.smile.apiobjects;
 
 public interface IPayload {
-
     String buildPayload();
 }

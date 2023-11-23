@@ -1,11 +1,12 @@
 package com.smile.apiobjects.address;
 
-import com.smile.core.apidriver.IPayload;
+import com.smile.apiobjects.IPayload;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.json.JSONObject;
 
+// @formatter:off
 /**
  * Payload Example:
  * {
@@ -13,6 +14,7 @@ import org.json.JSONObject;
  *   "fullAddress": "455 Bo Bypass, North Dellamouth, ND 09640"
  * }
  */
+// @formatter:on
 @Data
 @Builder
 @Accessors(chain = true)

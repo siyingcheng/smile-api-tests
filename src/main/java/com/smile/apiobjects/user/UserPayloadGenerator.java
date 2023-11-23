@@ -1,11 +1,12 @@
 package com.smile.apiobjects.user;
 
-import com.smile.core.apidriver.IPayload;
+import com.smile.apiobjects.IPayload;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.json.JSONObject;
 
+// @formatter:off
 /**
  * Payload Example:
  * {
@@ -15,6 +16,7 @@ import org.json.JSONObject;
  *   "username": "test_tc0008"
  * }
  */
+// @formatter:on
 @Builder
 @Accessors(chain = true)
 @Data
