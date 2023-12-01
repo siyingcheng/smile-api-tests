@@ -8,6 +8,7 @@ public class UsersApiObject extends BaseApiObject {
     private static final String BASE_USERS_URL = BASE_URL + "/users";
     private static final String USERS_ID_URL = BASE_USERS_URL + "/{id}";
     private static final String CURRENT_USER_URL = BASE_USERS_URL + "/current_user";
+    private static final String FILTER_USER_URL = BASE_USERS_URL + "/filter";
 
     public UsersApiObject(ApiDriver apiDriver) {
         super(apiDriver);
@@ -44,5 +45,10 @@ public class UsersApiObject extends BaseApiObject {
     public ApiResponse getCurrentUser() {
         initParameters();
         return apiDriver.get(CURRENT_USER_URL);
+    }
+
+    public ApiResponse filterUser(UserPayloadGenerator filterUserPayload) {
+        initParameters();
+        return apiDriver.post(FILTER_USER_URL, filterUserPayload.buildPayload());
     }
 }
